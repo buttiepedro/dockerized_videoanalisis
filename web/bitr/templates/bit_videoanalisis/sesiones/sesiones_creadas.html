@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar">
+        <h1>{%block title %}Sesiones existentes{% endblock %}</h1>
+    </nav>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col">Sesion</th>
+                <th class="col">Fecha</th>
+                <th class="col" colspan="4">Opciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for sesion in sesiones | reverse %}
+            <tr>
+                <td>
+                    <h5>{{get_nombre_equipo(sesion.id_club_local)}} - {{get_nombre_equipo(sesion.id_club_visitante)}}</h5>
+                </td>
+                <td>
+                    {{sesion.fecha}}
+                </td>
+                <td>
+                    <a href="{{url_for('interfaces.interfaces', id = sesion.id)}}" class="btn btn-success">Unirse</a>
+                    <a href="{{url_for('videoanalisis.dashboards', id = sesion.id)}}" class="btn btn-primary">Dashboards</a>
+                    <a href="{{url_for('videoanalisis.plantilla', id = sesion.id)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{url_for('videoanalisis.eliminar_sesion', id = sesion.id)}}" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</section>
+{% endblock %}

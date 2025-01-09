@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar">
+        <h1>{% block title %}Administrar Jugadores{% endblock %}</h1>
+    </nav>
+
+    <!-- Tabla de jugadores -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-10">
+            <h2 class="text-center">Jugadores Registrados</h2>
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Año Nacimiento</th>
+                        <th>Club</th>
+                        <th>Puesto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for jugador in jugadores %}
+                    <tr>
+                        <td>{{ jugador.id }}</td>
+                        <td>{{ jugador.nombre }}</td>
+                        <td>{{ jugador.apellido }}</td>
+                        <td>{{ jugador.ano_nacimiento }}</td>
+                        <td>{{ club.nombre }}</td>
+                        <td>                            
+                            {% for puesto in puestos %}
+                            {% if puesto.id == jugador.id_puesto %}
+                            {{ puesto.puesto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <form method="GET" action="{{ url_for('videoanalisis.eliminar_jugador', id=jugador.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+    <!-- Formulario -->
+    <div class="row justify-content-center mt-5">
+        <h2 class="text-center">Registrar Jugador</h2>
+        <div class="col-sm-6">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="alert alert-dismissible fade show mt-3">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+                <div class="mb-3">
+                    <label for="ano_nacimiento" class="form-label">Año Nacimiento</label>
+                    <input type="number" class="form-control" id="ano_nacimiento" name="ano_nacimiento" required>
+                </div>
+                <div class="mb-3">
+                    <label for="id_club" class="form-label">Club</label>
+                    <!-- Campo visible y no editable -->
+                    <input type="text" class="form-control" id="id_club" value="{{ club.nombre }}" readonly>
+                    <!-- Campo oculto para enviar el ID del club -->
+                    <input type="hidden" name="id_club" value="{{ club.id }}">
+                </div>
+                <div class="mb-3">
+                    <label for="id_puesto" class="form-label">Puesto</label>
+                    <select id="id_puesto" name="id_puesto" class="form-select" required>
+                        <option value="" disabled selected>Selecciona un puesto</option>
+                        {% for puesto in puestos %}
+                        <option value="{{ puesto.id }}">{{ puesto.puesto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Crear Jugador</button>
+            </form>
+        </div>
+    </div>
+
+
+</section>
+{% endblock %}

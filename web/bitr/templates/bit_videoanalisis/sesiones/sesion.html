@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">{% block title %}Sesion de Video{% endblock %}</h1>
+                </div>
+                <div class="card-header">
+                    <div class="text-center">
+                        <a href="{{ url_for('videoanalisis.crear_sesion') }}" class="btn btn-primary">Crear Sesion</a>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <a href="{{ url_for('videoanalisis.sesiones_creadas') }}" class="btn btn-primary">Unirse a Sesion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

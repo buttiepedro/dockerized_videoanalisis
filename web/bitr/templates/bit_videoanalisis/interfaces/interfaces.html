@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5" >
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">{% block title %}Interfaces{% endblock %}</h1>
+                </div>
+                <div class="card-body text-center">
+                    <div class="d-grid gap-3">
+                        {% if id_utilizado %}
+                            <button class="btn btn-danger btn-lg" onclick="alert('Error: Esta sesión ya está activa.');">Video</button>
+                        {% else %}
+                            <button onclick="handleSetFlag()" class="btn btn-success btn-lg">Video</button>
+                        {% endif %}
+                        <button  id="tackleButton" onclick="handleTackleRedirect()" class="btn btn-primary btn-lg">Tackle</button>
+                        <button id="cortesButton" onclick="handleCorteRedirect()" class="btn btn-primary btn-lg">Cortes</button>
+                        <button id="zonasButton" onclick="handleZonasRedirect()" class="btn btn-primary btn-lg">Zonas</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+let isOpen;
+document.addEventListener("DOMContentLoaded", function() {  
+    console.log("{{id_utilizado}}")
+    const isOpen = stringToBoolean("{{id_utilizado}}")
+
+    document.getElementById("tackleButton").disabled = !isOpen;
+    document.getElementById("cortesButton").disabled = !isOpen;
+    document.getElementById("zonasButton").disabled = !isOpen;
+});
+
+
+function stringToBoolean(value){
+    console.log((value === "True"));
+    return (value === "True")
+}
+
+
+    function handleSetFlag(){
+            
+        const url = "{{url_for('interfaces.video', id=id)}}"
+
+        console.log(url)
+        window.open(url,"_blank")
+
+    }
+
+    function handleTackleRedirect(){
+        const url="{{url_for('interfaces.tackle', id=id)}}"
+        console.log(url)
+        window.open(url,"_blank")
+    }
+
+    function handleCorteRedirect(){
+        const url="{{url_for('interfaces.cortes', id=id)}}"
+        window.open(url,"_blank")
+    }
+
+    function handleZonasRedirect(){
+        const url="{{url_for('interfaces.zonas', id=id)}}"
+        window.open(url,"_blank")
+    }
+</script>
+
+{% endblock %}

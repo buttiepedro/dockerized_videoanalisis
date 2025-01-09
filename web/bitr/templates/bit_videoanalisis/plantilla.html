@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar">
+        <h1>{% block title %}Jugadores del partido{% endblock %}</h1>
+    </nav>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <form method="POST" action="{{ url_for('videoanalisis.actualizar_plantilla') }}" class="d-flex align-items-center gap-3">
+                <!-- Campo oculto para id_sesion -->
+                <input type="hidden" name="id_sesion" value="{{ id_sesion }}">
+
+                <!-- Campo para número de camiseta -->
+                <div class="mb-3">
+                    <label for="numero_camiseta" class="form-label">Camiseta</label>
+                    <input 
+                        type="number" 
+                        id="numero_camiseta" 
+                        name="numero_camiseta" 
+                        class="form-control" 
+                        min="1" 
+                        max="23" 
+                        required 
+                        placeholder="N°"
+                    >
+                </div>
+
+                <!-- Desplegable de jugadores -->
+                <div class="mb-3 flex-grow-1">
+                    <label for="select-opciones" class="form-label">Selecciona un jugador:</label>
+                    <select id="select-opciones" name="id_jugador" class="form-select" required>
+                        <option value="" disabled selected>Selecciona un jugador</option>
+                        {% for opcion in opciones %}
+                        {% if opcion.id not in jugadores_plantilla | map(attribute='id_jugador') | list %}
+                        <option value="{{ opcion.id }}">{{ opcion.nombre }} {{ opcion.apellido }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Botón de agregar -->
+                <button type="submit" class="btn btn-primary mt-3 align-self-end">Agregar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <h2>Jugadores:</h2>
+            
+            <div class="row justify-content-center mt-5">
+                <div class="col-sm-10">
+                    <h2 class="text-center">Jugadores Registrados</h2>
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>Camiseta</th>
+                                <th>Jugador</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for jugador in jugadores_plantilla %}
+                            <tr>
+                                <td>{{ jugador.camiseta }}</td>
+                                <td>{{ get_nombre_jugador(jugador.id_jugador) }}</td>
+
+                                <td>
+                                    <form method="POST" action="{{ url_for('videoanalisis.eliminar_jugador_plantilla') }}" style="display: inline;">
+                                        <input type="hidden" name="id_plantilla" value="{{ jugador.id }}">
+                                        <input type="hidden" name="id" value="{{ id_sesion }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    </form>
+                                    
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</section>
+{% endblock %}

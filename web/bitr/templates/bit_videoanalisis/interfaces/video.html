@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Analisis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #333;
+        }
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Analisis</h1>
+    <iframe 
+        id="videoPlayer" 
+        src="{{get_video_link(id_sesion)}}" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+
+    <script>
+
+        const sesion = "{{id_sesion}}";
+        let intervalId = null; // Variable para almacenar la referencia del intervalo
+
+        // Cargar la API del reproductor de YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        let player;
+
+        // Inicializar el reproductor de YouTube
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('videoPlayer', {
+                events: {
+                    onStateChange: onPlayerStateChange
+                }
+            });
+        }
+
+        // Manejar cambios de estado del reproductor
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                if (!intervalId) { // Solo iniciar el intervalo si no está ya en ejecución
+                    intervalId = setInterval(() => {
+                        const currentTime = player.getCurrentTime();
+                        fetch('/eventos/register_heartbeat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                timestamp: currentTime,
+                                sesion: sesion
+                            })
+                        });
+                    }, 1000); // Enviar cada segundo
+                }
+            } else {
+                // Detener el intervalo cuando el video no está en reproducción
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+            }
+        }
+
+        // Listen for window closing or refreshing
+        window.addEventListener('beforeunload', function() {
+            fetch(`/eventos/remove_sesion/${sesion}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+        });
+
+        
+
+
+    </script>
+</body>
+</html>

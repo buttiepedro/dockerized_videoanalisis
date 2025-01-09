@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar">
+        <h1>{% block title %}Análisis de Zona{% endblock %}</h1>
+    </nav>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-12 text-center position-relative">
+            <img src="/static/img/Cancha.png" alt="cancha_rugby" class="img-fluid" style="width: 80%; height: auto;">
+
+            <!-- Botones posicionados sobre la imagen -->
+            <button class="btn btn-danger btn-lg position-absolute" onclick="marcar_zona('try_ajeno')" style="top: 50%; left: 15%;">Try</button>
+            <button class="btn btn-danger btn-lg position-absolute" onclick="marcar_zona('5_propias')" style="top: 50%; left: 25%;">5</button>
+            <button class="btn btn-danger btn-lg position-absolute" onclick="marcar_zona('22_propias')" style="top: 50%; left: 30%;">22</button>
+            <button class="btn btn-danger btn-lg position-absolute" onclick="marcar_zona('50_propias')" style="top: 50%; left: 45%;">50</button>
+            <button class="btn btn-primary btn-lg position-absolute" onclick="marcar_zona('50_ajenas')" style="top: 50%; left: 55%;">50</button>
+            <button class="btn btn-primary btn-lg position-absolute" onclick="marcar_zona('22_ajenas')" style="top: 50%; left: 65%;">22</button>
+            <button class="btn btn-primary btn-lg position-absolute" onclick="marcar_zona('5_ajenas')" style="top: 50%; left: 75%;">5</button>
+            <button class="btn btn-primary btn-lg position-absolute" onclick="marcar_zona('try_propio')" style="top: 50%; left: 80%;">Try</button>
+        </div>
+    </div>
+</section>
+
+<script>
+    function marcar_zona(event) {
+        
+        const sesion = "{{sesion}}";
+
+        fetch('/eventos/register_event_noplayer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ event: event, sesion: sesion })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+{% endblock %}

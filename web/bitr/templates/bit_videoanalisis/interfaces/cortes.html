@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar">
+        <h1>{% block title %}Control de Eventos{% endblock %}</h1>
+    </nav>
+
+    <!-- Grupo de botones -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-6 text-center">
+            <h2>Posesión</h2>
+            <button id="possessionButton" class="btn btn-success btn-lg" onclick="togglePossession()">Ganancia de posesion</button>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="col-sm-6 text-center">
+            <h2>Juego</h2>
+            <button id="ballButton" class="btn btn-success btn-lg" onclick="toggleBall()">Pelota en juego</button>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-6 text-center">
+            <h2>Eventos</h2>
+            <div class="row">
+                <div class="col-md-6 d-flex flex-column align-items-center">
+                    <button id="linePropioButton" class="btn btn-success btn-lg mb-2" onclick="showPopup('line_propio')">Line Propio</button>
+                    <button id="lineAjenoButton" class="btn btn-danger btn-lg mb-2" onclick="showPopup('line_ajeno')">Line Ajeno</button>
+                </div>
+                <div class="col-md-6 d-flex flex-column align-items-center">
+                    <button id="scrumPropioButton" class="btn btn-success btn-lg mb-2" onclick="showPopup('scrum_propio')">Scrum Propio</button>
+                    <button id="scrumAjenoButton" class="btn btn-danger btn-lg mb-2" onclick="showPopup('scrum_ajeno')">Scrum Ajeno</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popup Modal -->
+<div id="popupModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div class="modal-content" style="background:white; padding:20px; border-radius:5px; text-align:center;">
+        <h3 id="popupTitle"></h3>
+        <button id="btnObtencion" class="btn btn-success btn-lg mb-2" onclick="registerPopupEvent('con_obtencion')">Finalizacion con obtencion</button>
+        <button id="btnSinObtencion" class="btn btn-danger btn-lg" onclick="registerPopupEvent('sin_obtencion')">Finalizacion sin obtencion</button>
+        <br>
+    </div>
+</div>
+
+<script>
+    function togglePossession() {
+        const button = document.getElementById("possessionButton");
+        const currentState = button.textContent.trim();
+        const newState = currentState === "Ganancia de posesion" ? "Perdida de posesion" : "Ganancia de posesion";
+        const sesion = "{{sesion}}";
+
+        button.textContent = newState;
+        button.classList.toggle("btn-success");
+        button.classList.toggle("btn-danger");
+
+        const formattedState = newState.toLowerCase().replace(/ /g, "_");
+
+        fetch('/eventos/register_event_noplayer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ event: formattedState, sesion: sesion })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function toggleBall() {
+        const button = document.getElementById("ballButton");
+        const currentState = button.textContent.trim();
+        const newState = currentState === "Pelota en juego" ? "Pelota fuera de juego" : "Pelota en juego";
+        const sesion = "{{sesion}}";
+
+        button.textContent = newState;
+        button.classList.toggle("btn-success");
+        button.classList.toggle("btn-danger");
+
+        const formattedState = newState.toLowerCase().replace(/ /g, "_");
+
+        fetch('/eventos/register_event_noplayer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ event: formattedState, sesion: sesion })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function showPopup(eventType) {
+
+        const sesion = "{{sesion}}"
+
+        document.getElementById("popupTitle").textContent = `Obtencion`;
+        document.getElementById("popupModal").style.display = "flex";
+        document.getElementById("popupModal").dataset.eventType = eventType.toLowerCase();
+
+        fetch('/eventos/register_event_noplayer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ event: eventType, sesion: sesion })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+
+    }
+
+    function registerPopupEvent(option) {
+        const eventType = document.getElementById("popupModal").dataset.eventType;
+        const sesion = "{{sesion}}";
+
+        fetch('/eventos/register_event_noplayer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ event: option, sesion: sesion })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+
+        closePopup();
+    }
+
+    function closePopup() {
+        document.getElementById("popupModal").style.display = "none";
+    }
+</script>
+
+{% endblock %}
