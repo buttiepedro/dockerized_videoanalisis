@@ -26,7 +26,7 @@ def create_app():
     ckeditor = CKEditor(app)
 
     #Configurar idioma
-    locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
+    locale.setlocale(locale.LC_ALL, 'es_ES')
 
     #Registrar los blueprint
     from bitr import auth
@@ -47,7 +47,6 @@ def create_app():
     #Pagina principal
     @app.route('/')
     def index():
-
         return render_template('index.html')
     
     #Crear esquema de tablas luego de definir todos los modelos con SQLAlchemy

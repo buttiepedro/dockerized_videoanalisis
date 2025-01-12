@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, g, jso
 
 from bitr.auth import login_required
 
-from .models import User, Eventos, Clubes, Torneos, Sesiones, Jugadores, Jugadores_sesion, Puestos, Divisiones
+from .models import Eventos
 from bitr import db
 
 from bitr.videoanalisis_funciones import get_nombre_equipo,get_nombre_jugador,get_sesiones_activas,get_video_link,get_nombre_division

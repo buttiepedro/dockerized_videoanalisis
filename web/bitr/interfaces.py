@@ -15,9 +15,9 @@ bp = Blueprint('interfaces', __name__, url_prefix='/interfaces')
 @login_required
 def interfaces(id):
 
-    id_utilizado = id in get_sesiones_activas(bitr.eventos.heartbeats)
+    id_utilizado = str(id) in get_sesiones_activas(bitr.eventos.heartbeats)
 
-    #print(id_utilizado)
+    #print(f"ID: {id}, ID_UTILIZADOS: {get_sesiones_activas(bitr.eventos.heartbeats)}")
 
     return render_template('bit_videoanalisis/interfaces/interfaces.html', id = id, id_utilizado = id_utilizado)
 
