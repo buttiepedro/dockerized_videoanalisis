@@ -76,7 +76,7 @@ def register_event_noplayer():
         event = data.get('event')
         sesion = data.get('sesion')
 
-        registro = Eventos(id_sesion=sesion, event=event, momento = heartbeats.get(int(sesion),"error"))
+        registro = Eventos(id_sesion=sesion, event=event, momento = heartbeats.get(str(sesion),"error"))
 
         #print(registro)
 
