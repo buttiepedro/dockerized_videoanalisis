@@ -26,7 +26,7 @@ def create_app():
     ckeditor = CKEditor(app)
 
     #Configurar idioma
-    locale.setlocale(locale.LC_ALL, 'es_ES')
+    locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
 
     #Registrar los blueprint
     from bitr import auth
