@@ -52,8 +52,8 @@ class Divisiones(db.Model):
 
 class Jugadores(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    nombre = db.Column(db.String(50), unique = False, nullable = False)
-    apellido = db.Column(db.String(50), unique = False, nullable = False)
+    nombre = db.Column(db.String(50), unique = True, nullable = False)
+    apellido = db.Column(db.String(50), unique = True, nullable = False)
     ano_nacimiento = db.Column(db.Integer, unique = False, nullable = False)
     id_club = db.Column(db.Integer, db.ForeignKey('clubes.id'), nullable = True)
     id_puesto = db.Column(db.Integer, db.ForeignKey('puestos.id'), nullable = True)

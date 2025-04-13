@@ -3,13 +3,13 @@
 {% block content %}
 <section class="container-fluid">
     <nav class="navbar">
-        <h1>{% block title %}Registro de Tackles{% endblock %}</h1>
+        <h1>{% block title %}Registro de Pases{% endblock %}</h1>
     </nav>
 
     <!-- Botón para redirigir a otra página -->
     <div class="row justify-content-center mt-3">
         <div class="col-sm-10 text-end">
-            <a href="{{ url_for('interfaces.pases', id=id) }}" class="btn btn-secondary">Ganancia de Posesison</a>
+            <a href="{{ url_for('interfaces.tackle', id=id) }}" class="btn btn-secondary">Perdida de Posesison</a>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
                     <tr>
                         <th class="col">Camiseta</th>
                         <th class="col">Jugador</th>
-                        <th class="col" colspan="2">Tackle</th>
+                        <th class="col" colspan="2">Pase</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,16 +33,16 @@
                         <td>
                             <form class="register-event-form" method="POST" action="{{ url_for('eventos.register_event') }}" style="display: inline;">
                                 <input type="hidden" name="jugador" value="{{ jugador.id_jugador }}">
-                                <input type="hidden" name="event" value="tackle_positivo">
+                                <input type="hidden" name="event" value="pase_positivo">
                                 <input type="hidden" name="sesion" value="{{ jugador.id_sesion }}">
-                                <input type="hidden" name="url" value="{{url_for('interfaces.tackle', id=jugador.id_sesion)}}">
+                                <input type="hidden" name="url" value="{{url_for('interfaces.pases', id=jugador.id_sesion)}}">
                                 <button type="submit" class="btn btn-primary btn-sm">Concretado</button>
                             </form>
                             <form class="register-event-form" method="POST" action="{{ url_for('eventos.register_event') }}" style="display: inline;">
                                 <input type="hidden" name="jugador" value="{{ jugador.id_jugador }}">
-                                <input type="hidden" name="event" value="tackle_errado">
+                                <input type="hidden" name="event" value="pase_errado">
                                 <input type="hidden" name="sesion" value="{{ jugador.id_sesion }}">
-                                <input type="hidden" name="url" value="{{url_for('interfaces.tackle', id=jugador.id_sesion)}}">
+                                <input type="hidden" name="url" value="{{url_for('interfaces.pases', id=jugador.id_sesion)}}">
                                 <button type="submit" class="btn btn-danger btn-sm">Errado</button>
                             </form>
                         </td>

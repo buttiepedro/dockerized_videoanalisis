@@ -64,12 +64,6 @@ def eliminar_sesion(id):
 
     return redirect(url_for('videoanalisis.sesiones_creadas'))
 
-@bp.route('/dashboards/<int:id>', methods=['GET'])
-@login_required
-def dashboards(id):
-
-    return render_template('bit_videoanalisis/datos/dashboards.html', id = id)
-
 #PLANTILLA (JUGADORES) DEL PARTIDO
 
 @bp.route('/plantilla/<int:id>', methods = ['GET'])

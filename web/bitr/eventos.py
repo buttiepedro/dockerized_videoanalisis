@@ -54,7 +54,7 @@ def register_event():
 
         url = request.form['url']
 
-        evento = Eventos(event = event, id_sesion = id_sesion, id_jugador = id_jugador, momento = heartbeats.get(str(id_sesion),"error"))
+        evento = Eventos(event = event, id_sesion = id_sesion, id_jugador = id_jugador, momento = heartbeats.get(int(id_sesion),"error"))
 
         #print(evento)
 
