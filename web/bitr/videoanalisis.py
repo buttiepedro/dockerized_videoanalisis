@@ -6,7 +6,6 @@ from .models import User, Eventos, Clubes, Torneos, Sesiones, Jugadores, Jugador
 from bitr import db
 
 from bitr.videoanalisis_funciones import get_nombre_equipo,get_nombre_jugador,get_sesiones_activas,get_video_link,get_nombre_division
-import bitr.data_analisis
 
 import pandas as pd
 

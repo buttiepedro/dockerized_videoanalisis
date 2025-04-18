@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Análisis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #333;
+        }
+        #videoContainer {
+            width: 80%;
+            height: 60%;
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Análisis</h1>
+    <div id="videoContainer"></div>
+
+    <script>
+        const segmentos = JSON.parse('{{ segmentos | tojson | safe }}'); // lista de pares [[inicio1, fin1], [inicio2, fin2], ...]
+        const videoId = "{{ video_id }}"; // debe venir del backend
+        let currentSegmentIndex = 0;
+        let player;
+
+        // Cargar API de YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Crear el reproductor en el div
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('videoContainer', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: {
+                    start: segmentos[0][0]
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            reproducirSegmento(currentSegmentIndex);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                const inicio = segmentos[currentSegmentIndex][0];
+                const fin = segmentos[currentSegmentIndex][1];
+                const duracion = (fin - inicio) * 1000;
+
+                // Detener el video luego del tiempo del segmento actual
+                setTimeout(() => {
+                    currentSegmentIndex++;
+                    if (currentSegmentIndex < segmentos.length) {
+                        reproducirSegmento(currentSegmentIndex);
+                    } else {
+                        player.stopVideo(); // Finaliza
+                    }
+                }, duracion);
+            }
+        }
+
+        function reproducirSegmento(index) {
+            const startTime = segmentos[index][0];
+            player.seekTo(startTime);
+            player.playVideo();
+        }
+    </script>
+</body>
+</html>

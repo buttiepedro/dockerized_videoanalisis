@@ -34,6 +34,9 @@ def create_app():
 
     from bitr import videoanalisis
     app.register_blueprint(videoanalisis.bp)
+    
+    from bitr import cortes
+    app.register_blueprint(cortes.bp)
 
     from bitr import interfaces
     app.register_blueprint(interfaces.bp)

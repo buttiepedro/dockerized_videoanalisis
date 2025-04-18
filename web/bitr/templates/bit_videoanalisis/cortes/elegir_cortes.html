@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5" >
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">{% block title %}Interfaces{% endblock %}</h1>
+                </div>
+                <div class="card-body text-center">
+                    <div class="d-grid gap-3">
+                        <button  id="linesbutton" onclick="handleLineRedirect()" class="btn btn-primary btn-lg">Tackle</button>
+                        <button id="scrumbutton" onclick="handleTackleRedirect()" class="btn btn-primary btn-lg">Cortes</button>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+function stringToBoolean(value){
+    console.log((value === "True"));
+    return (value === "True")
+} 
+
+
+    function handleSetFlag(){
+            
+        const url = "{{url_for('interfaces.video', id=id)}}"
+
+        console.log(url)
+        window.open(url,"_blank")
+
+    }
+
+    function handleTackleRedirect(){
+        const url="{{url_for('interfaces.tackle', id=id)}}"
+        console.log(url)
+        window.open(url,"_blank")
+    }
+
+    function handleLineRedirect(){
+        const url="{{url_for('interfaces.cortes', id=id)}}"
+        window.open(url,"_blank")
+    }
+
+</script>
+
+{% endblock %}
