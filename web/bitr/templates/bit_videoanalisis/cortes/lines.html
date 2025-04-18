@@ -11,8 +11,8 @@
                 </div>
                 <div class="card-body text-center">
                     <div class="d-grid gap-3">
-                        <button  id="linesbutton" onclick="handleLineRedirect()" class="btn btn-primary btn-lg">Line</button>
-                        <button id="scrumbutton" onclick="handleScrumRedirect()" class="btn btn-primary btn-lg">Scrum</button>                        
+                        <button  id="linesbutton" onclick="handlePropiosRedirect()" class="btn btn-primary btn-lg">Propios</button>
+                        <button id="scrumbutton" onclick="handleAjenosRedirect()" class="btn btn-primary btn-lg">Ajenos</button>                        
                     </div>
                 </div>
             </div>
@@ -22,14 +22,14 @@
 
 <script>
 
-    function handleScrumRedirect(){
-        const url="{{url_for('cortes.scrums', id=id)}}"
+    function handlePropiosRedirect(){
+        const url="{{url_for('cortes.cortes', id=id)}}"
         console.log(url)
         window.open(url,"_blank")
     }
 
-    function handleLineRedirect(){
-        const url="{{url_for('cortes.lines', id=id)}}"
+    function handleAjenosRedirect(){
+        const url="{{url_for('cortes.cortes', id=id)}}"
         window.open(url,"_blank")
     }
 

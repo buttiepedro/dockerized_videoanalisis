@@ -11,9 +11,16 @@ bp = Blueprint('cortes', __name__, url_prefix='/cortes')
 @login_required
 def cortes(id):
 
-    video_id = extraer_video_id(get_video_link(id))  # extrae el ID puro del video
-    segmentos = obtener_segmentos(id)  # retorna lista: [(inicio1, fin1), (inicio2, fin2), ...]
-    
-    print(segmentos)
+    return render_template('bit_videoanalisis/cortes/elegir_cortes.html', id=id)
 
-    return render_template('bit_videoanalisis/cortes/cortes.html', video_id=video_id, segmentos=segmentos, id_sesion=id)
+@bp.route('/lines/<int:id>', methods = ["GET"])
+@login_required
+def lines(id):
+
+    return render_template('bit_videoanalisis/cortes/lines.html', id=id)
+
+@bp.route('/scrums/<int:id>', methods = ["GET"])
+@login_required
+def scrums(id):
+
+    return render_template('bit_videoanalisis/cortes/scrums.html', id=id)
