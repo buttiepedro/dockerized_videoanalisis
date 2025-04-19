@@ -66,14 +66,14 @@ def extraer_video_id(url):
     return None
 
 
-def obtener_segmentos(id_sesion):
+def obtener_segmentos(id_sesion, tipo):
     # Filtramos eventos de una sesión y solo los relevantes
     eventos = (
         db.session.query(Eventos)
         .filter(
             Eventos.id_sesion == id_sesion,
             or_(
-                Eventos.event.like("inicio_%"),
+                Eventos.event.like(tipo),
                 Eventos.event.like("finalizacion_%")
             )
         )
@@ -88,7 +88,7 @@ def obtener_segmentos(id_sesion):
     print(eventos)
     
     for evento in eventos:
-        if evento.event.startswith("inicio_"):
+        if evento.event.startswith(tipo):
             inicio = evento.momento
             
         elif evento.event.startswith("finalizacion_") and inicio is not None:

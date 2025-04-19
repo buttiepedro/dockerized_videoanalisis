@@ -32,7 +32,12 @@ def line_cortes(id):
     data = request.get_json()
     tipo = data.get('tipo')
 
-    return render_template('bit_videoanalisis/cortes/cortes.html', id=id)
+    tipo = "line_"+tipo
+
+    segmentos = obtener_segmentos(id,tipo)
+    video_id = extraer_video_id(get_video_link(id))
+
+    return render_template('bit_videoanalisis/cortes/cortes.html', id=id, tipo=tipo, segmentos=segmentos, video_id=video_id)
 
 @bp.route('/scrum_cortes/<int:id>', methods = ["POST"])
 @login_required
@@ -40,5 +45,10 @@ def scrum_cortes(id):
 
     data = request.get_json()
     tipo = data.get('tipo')
+    
+    tipo = "scrum_"+tipo
 
-    return render_template('bit_videoanalisis/cortes/cortes.html', id=id)
+    segmentos = obtener_segmentos(id,tipo)
+    video_id = extraer_video_id(get_video_link(id))
+
+    return render_template('bit_videoanalisis/cortes/cortes.html', id=id, tipo=tipo, segmentos=segmentos, video_id=video_id)
