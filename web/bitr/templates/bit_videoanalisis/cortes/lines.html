@@ -11,26 +11,20 @@
                 </div>
                 <div class="card-body text-center">
                     <div class="d-grid gap-3">
-                        <button  id="linesbutton" onclick="sendCorte('propio')" class="btn btn-primary btn-lg">Propios</button>
-                        <button id="scrumbutton" onclick="sendCorte('ajeno')" class="btn btn-primary btn-lg">Ajenos</button>                        
+                        <form method="post" action="{{ url_for('cortes.line_cortes', id=id) }}">
+                            <input type="hidden" name="tipo" value="propio">
+                            <button type="submit" class="btn btn-primary btn-lg">Propios</button>
+                        </form>
+                        
+                        <form method="post" action="{{ url_for('cortes.line_cortes', id=id) }}">
+                            <input type="hidden" name="tipo" value="ajeno">
+                            <button type="submit" class="btn btn-primary btn-lg">Ajenos</button>
+                        </form>                     
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-
-    function sendCorte(tipo) {
-        fetch("{{ url_for('cortes.line_cortes', id=id) }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ tipo: tipo })
-        });
-    }
-</script>
 
 {% endblock %}

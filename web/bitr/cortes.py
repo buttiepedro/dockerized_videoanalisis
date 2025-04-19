@@ -25,12 +25,11 @@ def scrums(id):
 
     return render_template('bit_videoanalisis/cortes/scrums.html', id=id)
 
-@bp.route('/line_cortes/<int:id>', methods = ["POST"])
+@bp.route('/line_cortes/<int:id>', methods = ["GET","POST"])
 @login_required
 def line_cortes(id):
 
-    data = request.get_json()
-    tipo = data.get('tipo')
+    tipo = request.form.get("tipo")
 
     tipo = "line_"+tipo
 
@@ -39,12 +38,11 @@ def line_cortes(id):
 
     return render_template('bit_videoanalisis/cortes/cortes.html', id=id, tipo=tipo, segmentos=segmentos, video_id=video_id)
 
-@bp.route('/scrum_cortes/<int:id>', methods = ["POST"])
+@bp.route('/scrum_cortes/<int:id>', methods = ["GET","POST"])
 @login_required
 def scrum_cortes(id):
 
-    data = request.get_json()
-    tipo = data.get('tipo')
+    tipo = request.form.get("tipo")
     
     tipo = "scrum_"+tipo
 
